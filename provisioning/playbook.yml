@@ -1,0 +1,47 @@
+# Ansible-playbook — установка окружения внутри ВМ.
+# Запускается автоматически при первом vagrant up.
+
+---
+- hosts: all
+  become: true
+  tasks:
+    # Обновляем кэш apt, чтобы получить актуальные версии пакетов.
+    - name: update apt cache
+      apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    # Устанавливаем Docker, Docker Compose, Python и утилиты.
+    - name: install base packages
+      apt:
+        name:
+          - docker.io
+          - docker-compose
+          - python3-pip
+          - curl
+          - git
+        state: present
+
+    # Добавляем пользователя vagrant в группу docker,
+    # чтобы можно было запускать docker без sudo.
+    - name: add vagrant to docker group
+      user:
+        name: vagrant
+        groups: docker
+        append: true
+
+    # Запускаем Docker и включаем автозапуск.
+    - name: enable docker service
+      service:
+        name: docker
+        state: started
+        enabled: true
+
+    # Устанавливаем Python-библиотеки для тестов.
+    - name: install python test dependencies
+      pip:
+        name:
+          - pytest
+          - requests
+          - pyyaml
+        state: present

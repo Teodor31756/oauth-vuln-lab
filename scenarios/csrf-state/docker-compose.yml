@@ -1,0 +1,30 @@
+# Docker Compose для сценария csrf-state.
+# Порты отличаются от open-redirect, чтобы избежать конфликта.
+
+services:
+  auth-server:
+    build: ./auth-server
+    ports:
+      - "8083:8083"
+    networks:
+      - lab
+
+  client-app:
+    build: ./client-app
+    ports:
+      - "8084:8084"
+    depends_on:
+      - auth-server
+    networks:
+      - lab
+
+  attacker-server:
+    build: ./attacker-server
+    ports:
+      - "8085:8085"
+    networks:
+      - lab
+
+networks:
+  lab:
+    driver: bridge

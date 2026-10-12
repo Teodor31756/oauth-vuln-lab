@@ -1,0 +1,14 @@
+# Docker Compose для сценария jwt-bypass.
+# Один сервис: уязвимый сервер проверки JWT.
+
+services:
+  auth-server:
+    build: ./auth-server
+    ports:
+      - "8086:8086"
+    networks:
+      - lab
+
+networks:
+  lab:
+    driver: bridge

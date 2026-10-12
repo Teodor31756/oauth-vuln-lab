@@ -1,0 +1,30 @@
+# Docker Compose для сценария open-redirect.
+# Поднимает три сервиса: сервер авторизации, клиент и сервер атакующего.
+
+services:
+  auth-server:
+    build: ./auth-server
+    ports:
+      - "8080:8080"
+    networks:
+      - lab
+
+  client-app:
+    build: ./client-app
+    ports:
+      - "8081:8081"
+    depends_on:
+      - auth-server
+    networks:
+      - lab
+
+  attacker-server:
+    build: ./attacker-server
+    ports:
+      - "8082:8082"
+    networks:
+      - lab
+
+networks:
+  lab:
+    driver: bridge
