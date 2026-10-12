@@ -35,7 +35,7 @@
 
 ### Шаг 1. Клонирование проекта
 
-    git clone <repo-url>
+    git clone https://github.com/Teodor31756/oauth-vuln-lab
     cd oauth-vuln-lab
 
 Или распакуйте ZIP-архив.
